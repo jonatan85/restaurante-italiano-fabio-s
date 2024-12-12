@@ -1,5 +1,5 @@
 export type Pizza = {
-  id: string;
+  _id: string;
   name: string;
   mass: string[];
   size: string[];
