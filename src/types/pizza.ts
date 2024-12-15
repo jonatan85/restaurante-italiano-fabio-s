@@ -5,8 +5,9 @@ export type Pizza = {
   size: string[];
   dip: string[];
   ingredients: string[];
+  quantity: number,
   price: number;
-  account?: number;
+  account: number;
   picture?: string;
   createdAt?: string;
   updatedAt?: string;

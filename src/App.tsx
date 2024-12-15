@@ -8,13 +8,12 @@ function App() {
   // Consultar la base de datos porvisional.
   const [pizzas, setPizzas] = useState<Pizza[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [cart, setCart] = useState<Pizza[]>([])
 
   useEffect(() => {
     const fetchPizzas = async () => {
       try {
         const dataPizzas = await getPizzas();
-        console.log("Pizzas obtenidas", dataPizzas);
-
         setPizzas(dataPizzas);
       } catch (err) {
         setError("Error al cargar las pizzas");
@@ -24,9 +23,24 @@ function App() {
     fetchPizzas();
   }, []);
 
+  function addToCart(item: Pizza) {
+    const pizzaExists = cart.findIndex((pizza) => pizza._id === item._id);
+    if(pizzaExists >= 0 ) {
+      const updateCart = [...cart]
+      updateCart[pizzaExists].account++
+      setCart(updateCart)
+    } else {
+      item.account = 1
+      setCart([...cart, item]);    
+    }
+    
+  };
+
   return (
     <>
-      <Header />
+      <Header 
+        cart={cart}
+      />
       <main className="container mx-auto mt-10 px-4">
         <h2 className="text-center text-3xl font-bold text-gray-800">
           ¡Elige tu Pizza Favorita!
@@ -34,7 +48,11 @@ function App() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {pizzas.map((pizza) => (
-            <Pizzas key={pizza._id} pizza={pizza} />
+            <Pizzas 
+              key={pizza._id} 
+              pizza={pizza}
+              addToCart={addToCart}
+            />
           ))}
         </div>
       </main>

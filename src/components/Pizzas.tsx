@@ -1,15 +1,15 @@
 import type { Pizza } from "../types/pizza";
+
 type PizzaProps = {
-  pizza: Pizza
+  pizza: Pizza,
+  addToCart: (item: Pizza) => void
 }
 
-export default function Pizzas( { pizza } : PizzaProps) {
+export default function Pizzas( { pizza, addToCart } : PizzaProps) {
 
   const { _id, dip, ingredients, mass, name, picture, price, size } = pizza;
 
-  const handleClick = (pizza: Pizza) => {
-    console.log(pizza);
-  }
+ 
 
   return (
     <div className="flex flex-wrap items-center bg-gray-100 rounded-lg shadow-md p-4 my-4">
@@ -26,7 +26,7 @@ export default function Pizzas( { pizza } : PizzaProps) {
         <button
           type="button"
           className="bg-gray-800 text-white rounded-md w-full py-2 mt-4 hover:bg-gray-900"
-          onClick={() => handleClick(pizza)}
+          onClick={() => addToCart(pizza)}
         >
           Agregar al Carrito
         </button>
