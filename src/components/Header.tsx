@@ -3,7 +3,7 @@ export default function Header() {
     <>
       <header className="bg-gray-800 text-white">
         <div className="container mx-auto px-4 py-6">
-          <h1 className="text-4xl font-bold text-center uppercase">Favio'S</h1>
+          <h1 className="text-4xl font-bold text-center uppercase">Fabio'S</h1>
         </div>
         <nav className="bg-gray-800 p-4">
   <div className="carrito flex justify-end">

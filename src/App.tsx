@@ -11,28 +11,32 @@ function App() {
 
   useEffect(() => {
     const fetchPizzas = async () => {
-    try{
-      const dataPizzas = await getPizzas();
-      console.log('Pizzas obtenidas', dataPizzas);
-      
-      setPizzas(dataPizzas);
-    } catch (err) {
-      setError('Error al cargar las pizzas')
-      console.error(err);
-    }   
-    }
+      try {
+        const dataPizzas = await getPizzas();
+        console.log("Pizzas obtenidas", dataPizzas);
+
+        setPizzas(dataPizzas);
+      } catch (err) {
+        setError("Error al cargar las pizzas");
+        console.error(err);
+      }
+    };
     fetchPizzas();
-  }, [])
-  
+  }, []);
+
   return (
     <>
       <Header />
       <main className="container mx-auto mt-10 px-4">
         <h2 className="text-center text-3xl font-bold text-gray-800">
-          <Pizzas />
+          ¡Elige tu Pizza Favorita!
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+          {pizzas.map((pizza) => (
+            <Pizzas key={pizza._id} pizza={pizza} />
+          ))}
+        </div>
       </main>
 
       <footer className="bg-gray-800 mt-10 py-8">
