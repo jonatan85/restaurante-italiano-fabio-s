@@ -5,10 +5,16 @@ import { getPizzas } from "./service/pizzaService.ts";
 import { Pizza } from "./types/pizza.ts";
 
 function App() {
-  // Consultar la base de datos porvisional.
+  
+  const initialCart = () => {
+    const localStorageCart = localStorage.getItem('cart')
+    return localStorageCart ? JSON.parse(localStorageCart) : []
+}
+
+
   const [pizzas, setPizzas] = useState<Pizza[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [cart, setCart] = useState<Pizza[]>([])
+  const [cart, setCart] = useState<Pizza[]>(initialCart)
 
   const MIN_ITEMS = 1
   const MAX_ITEMS = 20
@@ -25,6 +31,10 @@ function App() {
     };
     fetchPizzas();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart))
+}, [cart])
 
   function addToCart(item: Pizza) {
     const pizzaExists = cart.findIndex((pizza) => pizza._id === item._id);
