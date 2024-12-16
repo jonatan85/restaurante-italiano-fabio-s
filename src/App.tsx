@@ -36,10 +36,15 @@ function App() {
     
   };
 
+  function removeFromCart(_id: string) {
+    setCart(prevCart => prevCart.filter(pizza => pizza._id !== _id))
+  };
+
   return (
     <>
       <Header 
         cart={cart}
+        removeFromCart={removeFromCart}
       />
       <main className="container mx-auto mt-10 px-4">
         <h2 className="text-center text-3xl font-bold text-gray-800">

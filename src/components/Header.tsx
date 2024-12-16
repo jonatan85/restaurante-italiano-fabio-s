@@ -2,11 +2,11 @@ import { useMemo } from "react";
 import { Pizza } from "../types/pizza";
 
 type HeaderPorps = {
-  cart: Pizza[];
-  cartTotal: number
+  cart: Pizza[],
+  removeFromCart(_id: string): void
 };
 
-export default function Header({ cart }: HeaderPorps) {
+export default function Header({ cart, removeFromCart }: HeaderPorps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
   const cartTotal = useMemo(() => cart.reduce((total, item) => total + (item.account * item.price), 0), [cart]) 
 
@@ -87,6 +87,7 @@ export default function Header({ cart }: HeaderPorps) {
                               <button
                                 className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600"
                                 type="button"
+                                onClick={() => removeFromCart(pizza._id)}
                               >
                                 X
                               </button>
