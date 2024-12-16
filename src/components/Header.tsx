@@ -3,10 +3,13 @@ import { Pizza } from "../types/pizza";
 
 type HeaderPorps = {
   cart: Pizza[],
-  removeFromCart(_id: string): void
+  removeFromCart(_id: string): void,
+  increaseAccount(_id: string): void
+  decreaseAccount(_id: Pizza["_id"]): void
+  clearCart(): void
 };
 
-export default function Header({ cart, removeFromCart }: HeaderPorps) {
+export default function Header({ cart, removeFromCart, increaseAccount, decreaseAccount, clearCart }: HeaderPorps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
   const cartTotal = useMemo(() => cart.reduce((total, item) => total + (item.account * item.price), 0), [cart]) 
 
@@ -70,6 +73,7 @@ export default function Header({ cart, removeFromCart }: HeaderPorps) {
                               <button
                                 type="button"
                                 className="bg-gray-700 text-white px-2 py-1 rounded-md hover:bg-gray-800"
+                                onClick={() => decreaseAccount(pizza._id)}
                               >
                                 -
                               </button>
@@ -79,6 +83,7 @@ export default function Header({ cart, removeFromCart }: HeaderPorps) {
                               <button
                                 type="button"
                                 className="bg-gray-700 text-white px-2 py-1 rounded-md hover:bg-gray-800"
+                                onClick={() => increaseAccount(pizza._id)}
                               >
                                 +
                               </button>
@@ -105,9 +110,14 @@ export default function Header({ cart, removeFromCart }: HeaderPorps) {
                     </p>
                   </>
                 )}
-                <button className="bg-gray-700 text-white w-full mt-4 py-2 rounded-md hover:bg-gray-800">
+                {!isEmpty && (
+                <button 
+                  className="bg-gray-700 text-white w-full mt-4 py-2 rounded-md hover:bg-gray-800"
+                  onClick={() => clearCart()}
+                >
                   Vaciar Carrito
                 </button>
+                )}
               </div>
             </div>
           </div>

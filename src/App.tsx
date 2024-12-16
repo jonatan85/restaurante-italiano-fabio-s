@@ -10,6 +10,9 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [cart, setCart] = useState<Pizza[]>([])
 
+  const MIN_ITEMS = 1
+  const MAX_ITEMS = 20
+
   useEffect(() => {
     const fetchPizzas = async () => {
       try {
@@ -40,11 +43,45 @@ function App() {
     setCart(prevCart => prevCart.filter(pizza => pizza._id !== _id))
   };
 
+  function increaseAccount(id: string) {
+    const updatedCart = cart.map(item => {
+      if (item._id === id && item.account < MAX_ITEMS) {
+          return {
+              ...item,
+              account: item.account + 1
+          }
+      }
+      return item
+  })
+  setCart(updatedCart)
+    
+  };
+
+  function decreaseAccount(_id: Pizza['_id']) {
+    const updatedCart = cart.map(item => {
+        if (item._id === _id && item.account > MIN_ITEMS) {
+            return {
+                ...item,
+                account: item.account - 1
+            }
+        }
+        return item
+    })
+    setCart(updatedCart)
+};
+
+function clearCart() {
+  setCart([])
+}
+
   return (
     <>
       <Header 
         cart={cart}
         removeFromCart={removeFromCart}
+        increaseAccount={increaseAccount}
+        decreaseAccount={decreaseAccount}
+        clearCart={clearCart}
       />
       <main className="container mx-auto mt-10 px-4">
         <h2 className="text-center text-3xl font-bold text-gray-800">
