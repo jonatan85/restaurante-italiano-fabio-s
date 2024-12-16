@@ -3,10 +3,12 @@ import { Pizza } from "../types/pizza";
 
 type HeaderPorps = {
   cart: Pizza[];
+  cartTotal: number
 };
 
 export default function Header({ cart }: HeaderPorps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
+  const cartTotal = useMemo(() => cart.reduce((total, item) => total + (item.account * item.price), 0), [cart]) 
 
   return (
     <>
@@ -23,7 +25,7 @@ export default function Header({ cart }: HeaderPorps) {
                 className="w-8 h-8 cursor-pointer"
               />
               {/* Mejorar toda la logica de el carrito */}
-              <div className="absolute right-0 mt-2 w-80 bg-white p-6 rounded-lg shadow-lg hidden group-hover:block">
+              <div className="absolute right-0 mt-2 w-[45rem] bg-white p-6 rounded-lg shadow-lg opacity-0 transition-opacity duration-1000 delay-1000 group-hover:opacity-100 group-hover:delay-0">
                 {isEmpty ? (
                   <p className="text-center text-gray-600 font-medium">
                     El carrito está vacío
@@ -64,7 +66,7 @@ export default function Header({ cart }: HeaderPorps) {
                             <td className="px-4 py-2 font-bold text-gray-700">
                               {pizza.price}
                             </td>
-                            <td className="px-4 py-2 flex items-center gap-2">
+                            <td className="px-4 py-7 flex items-center gap-2">
                               <button
                                 type="button"
                                 className="bg-gray-700 text-white px-2 py-1 rounded-md hover:bg-gray-800"
@@ -97,12 +99,7 @@ export default function Header({ cart }: HeaderPorps) {
                       Total pagar:{" "}
                       <span className="font-bold">
                         $
-                        {cart
-                          .reduce(
-                            (acc, item) => acc + item.price * item.account,
-                            0
-                          )
-                          .toFixed(2)}
+                        {cartTotal}
                       </span>
                     </p>
                   </>
