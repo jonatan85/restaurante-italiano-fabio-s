@@ -1,11 +1,11 @@
 export type Pizza = {
   _id: string;
   name: string;
-  mass: string[];
-  size: string[];
-  dip: string[];
+  mass: string;
+  size: string; 
+  dip: string;  
   ingredients: string[];
-  quantity: number,
+  quantity: number;
   price: number;
   account: number;
   picture?: string;
@@ -13,10 +13,15 @@ export type Pizza = {
   updatedAt?: string;
 };
 
+
 export type DraftPizza = Omit<Pizza, "id" | "createdAt" | "updatedAt">;
 
 export type Ingredient = {
   id: string;
   name: string;
   isVegan: boolean;
+};
+
+export type CartItem = Pizza & {
+  account: number;
 };
