@@ -1,17 +1,22 @@
-import { useMemo } from "react";
+import { Dispatch, useMemo } from "react";
 import { Pizza } from "../types/pizza";
+import { CartActions } from "../reducers/cart-reducer";
 
 type HeaderPorps = {
-  cart: Pizza[],
-  removeFromCart(_id: string): void,
-  increaseAccount(_id: string): void
-  decreaseAccount(_id: Pizza["_id"]): void
-  clearCart(): void
+  cart: Pizza[];
+  dispatch: Dispatch<CartActions>;
 };
 
-export default function Header({ cart, removeFromCart, increaseAccount, decreaseAccount, clearCart }: HeaderPorps) {
+export default function Header({
+  cart,
+  dispatch,
+}: HeaderPorps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
-  const cartTotal = useMemo(() => cart.reduce((total, item) => total + (item.account * item.price), 0), [cart]) 
+
+  const cartTotal = useMemo(
+    () => cart.reduce((total, item) => total + item.account * item.price, 0).toFixed(2),
+    [cart]
+  );
 
   return (
     <>
@@ -73,7 +78,12 @@ export default function Header({ cart, removeFromCart, increaseAccount, decrease
                               <button
                                 type="button"
                                 className="bg-gray-700 text-white px-2 py-1 rounded-md hover:bg-gray-800"
-                                onClick={() => decreaseAccount(pizza._id)}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "decreaseAccount",
+                                    payload: { id: pizza._id },
+                                  })
+                                }
                               >
                                 -
                               </button>
@@ -83,7 +93,12 @@ export default function Header({ cart, removeFromCart, increaseAccount, decrease
                               <button
                                 type="button"
                                 className="bg-gray-700 text-white px-2 py-1 rounded-md hover:bg-gray-800"
-                                onClick={() => increaseAccount(pizza._id)}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "increaseAccount",
+                                    payload: { id: pizza._id },
+                                  })
+                                }
                               >
                                 +
                               </button>
@@ -92,7 +107,12 @@ export default function Header({ cart, removeFromCart, increaseAccount, decrease
                               <button
                                 className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600"
                                 type="button"
-                                onClick={() => removeFromCart(pizza._id)}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "removeFromCart",
+                                    payload: { id: pizza._id },
+                                  })
+                                }
                               >
                                 X
                               </button>
@@ -103,20 +123,21 @@ export default function Header({ cart, removeFromCart, increaseAccount, decrease
                     </table>
                     <p className="text-right text-lg font-medium text-gray-800 mt-4">
                       Total pagar:{" "}
-                      <span className="font-bold">
-                        $
-                        {cartTotal}
-                      </span>
+                      <span className="font-bold">${cartTotal}</span>
                     </p>
                   </>
                 )}
                 {!isEmpty && (
-                <button 
-                  className="bg-gray-700 text-white w-full mt-4 py-2 rounded-md hover:bg-gray-800"
-                  onClick={() => clearCart()}
-                >
-                  Vaciar Carrito
-                </button>
+                  <button
+                    className="bg-gray-700 text-white w-full mt-4 py-2 rounded-md hover:bg-gray-800"
+                    onClick={() =>
+                      dispatch({
+                        type: "clearCart",
+                      })
+                    }
+                  >
+                    Vaciar Carrito
+                  </button>
                 )}
               </div>
             </div>

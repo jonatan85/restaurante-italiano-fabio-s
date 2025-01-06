@@ -7,24 +7,10 @@ import { Pizza } from "./types/pizza.ts";
 import { cartReducer, initialState } from "./reducers/cart-reducer.ts";
 
 function App() {
-  
-  const initialCart = () => {
-    const localStorageCart = localStorage.getItem('cart')
-    return localStorageCart ? JSON.parse(localStorageCart) : []
-}
-
-
   const [pizzas, setPizzas] = useState<Pizza[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [cart, setCart] = useState<Pizza[]>(initialCart)
 
-  const MIN_ITEMS = 1
-  const MAX_ITEMS = 20
-
-  const [state, dispatch] = useReducer(cartReducer, {
-    ...initialState,
-    cart: JSON.parse(localStorage.getItem("cart") || "[]"),
-  });
+  const [state, dispatch] = useReducer(cartReducer, initialState);
 
   useEffect(() => {
     const fetchPizzas = async () => {
@@ -40,54 +26,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(state.cart))
-}, [state.cart])
-
-
-  function removeFromCart(_id: string) {
-    setCart(prevCart => prevCart.filter(pizza => pizza._id !== _id))
-  };
-
-  function increaseAccount(id: string) {
-    const updatedCart = cart.map(item => {
-      if (item._id === id && item.account < MAX_ITEMS) {
-          return {
-              ...item,
-              account: item.account + 1
-          }
-      }
-      return item
-  })
-  setCart(updatedCart)
-    
-  };
-
-  function decreaseAccount(_id: Pizza['_id']) {
-    const updatedCart = cart.map(item => {
-        if (item._id === _id && item.account > MIN_ITEMS) {
-            return {
-                ...item,
-                account: item.account - 1
-            }
-        }
-        return item
-    })
-    setCart(updatedCart)
-};
-
-function clearCart() {
-  setCart([])
-}
+    localStorage.setItem("cart", JSON.stringify(state.cart));
+  }, [state.cart]);
 
   return (
     <>
-      <Header 
-        cart={state.cart}
-        removeFromCart={removeFromCart}
-        increaseAccount={increaseAccount}
-        decreaseAccount={decreaseAccount}
-        clearCart={clearCart}
-      />
+      <Header cart={state.cart} dispatch={dispatch} />
       <main className="container mx-auto mt-10 px-4">
         <h2 className="text-center text-3xl font-bold text-gray-800">
           ¡Elige tu Pizza Favorita!
@@ -95,11 +39,7 @@ function clearCart() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
           {pizzas.map((pizza) => (
-            <Pizzas 
-              key={pizza._id} 
-              pizza={pizza}
-              dispatch={dispatch}
-            />
+            <Pizzas key={pizza._id} pizza={pizza} dispatch={dispatch} />
           ))}
         </div>
       </main>
