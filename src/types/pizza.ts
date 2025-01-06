@@ -14,7 +14,7 @@ export type Pizza = {
 };
 
 
-export type DraftPizza = Omit<Pizza, "id" | "createdAt" | "updatedAt">;
+export type DraftPizza = Omit<Pizza, "createdAt" | "updatedAt">;
 
 export type Ingredient = {
   id: string;

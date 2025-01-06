@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import Header from "./components/Header.tsx";
 import Pizzas from "./components/Pizzas.tsx";
 import { getPizzas } from "./service/pizzaService.ts";
 import { Pizza } from "./types/pizza.ts";
+
+import { cartReducer, initialState } from "./reducers/cart-reducer.ts";
 
 function App() {
   
@@ -19,6 +21,11 @@ function App() {
   const MIN_ITEMS = 1
   const MAX_ITEMS = 20
 
+  const [state, dispatch] = useReducer(cartReducer, {
+    ...initialState,
+    cart: JSON.parse(localStorage.getItem("cart") || "[]"),
+  });
+
   useEffect(() => {
     const fetchPizzas = async () => {
       try {
@@ -33,21 +40,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart))
-}, [cart])
+    localStorage.setItem('cart', JSON.stringify(state.cart))
+}, [state.cart])
 
-  function addToCart(item: Pizza) {
-    const pizzaExists = cart.findIndex((pizza) => pizza._id === item._id);
-    if(pizzaExists >= 0 ) {
-      const updateCart = [...cart]
-      updateCart[pizzaExists].account++
-      setCart(updateCart)
-    } else {
-      item.account = 1
-      setCart([...cart, item]);    
-    }
-    
-  };
 
   function removeFromCart(_id: string) {
     setCart(prevCart => prevCart.filter(pizza => pizza._id !== _id))
@@ -87,7 +82,7 @@ function clearCart() {
   return (
     <>
       <Header 
-        cart={cart}
+        cart={state.cart}
         removeFromCart={removeFromCart}
         increaseAccount={increaseAccount}
         decreaseAccount={decreaseAccount}
@@ -103,7 +98,7 @@ function clearCart() {
             <Pizzas 
               key={pizza._id} 
               pizza={pizza}
-              addToCart={addToCart}
+              dispatch={dispatch}
             />
           ))}
         </div>

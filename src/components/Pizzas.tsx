@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { Dispatch, useState } from "react";
 import type { Pizza } from "../types/pizza";
+import { CartActions } from "../reducers/cart-reducer";
 
 type PizzaProps = {
   pizza: Pizza;
-  addToCart: (item: Pizza) => void;
+  dispatch: Dispatch<CartActions>
 };
 
-export default function Pizzas({ pizza, addToCart }: PizzaProps) {
+export default function Pizzas({ pizza, dispatch }: PizzaProps) {
   const { name, picture, dip, ingredients, mass, size, price } = pizza;
 
  
@@ -34,7 +35,11 @@ export default function Pizzas({ pizza, addToCart }: PizzaProps) {
       dip: selectedDip,
       price: parseFloat(calculatePrice()), 
     };
-    addToCart(customizedPizza);
+    dispatch({
+      type: 'add-to-cart',
+      payload: {item: customizedPizza}
+    });
+    
   };
   return (
     <div className="flex flex-wrap items-center bg-gray-100 rounded-lg shadow-md p-4 my-4">
