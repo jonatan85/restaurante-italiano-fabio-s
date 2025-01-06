@@ -7,7 +7,7 @@ import { Pizza } from "./types/pizza.ts";
 import { cartReducer, initialState } from "./reducers/cart-reducer.ts";
 
 function App() {
-  const [pizzas, setPizzas] = useState<Pizza[]>([]);
+  
   const [error, setError] = useState<string | null>(null);
 
   const [state, dispatch] = useReducer(cartReducer, initialState);
@@ -16,7 +16,7 @@ function App() {
     const fetchPizzas = async () => {
       try {
         const dataPizzas = await getPizzas();
-        setPizzas(dataPizzas);
+        dispatch({ type: "setPizzas", payload: { pizzas: dataPizzas } });
       } catch (err) {
         setError("Error al cargar las pizzas");
         console.error(err);
@@ -38,7 +38,7 @@ function App() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-          {pizzas.map((pizza) => (
+          {state.data.map((pizza) => (
             <Pizzas key={pizza._id} pizza={pizza} dispatch={dispatch} />
           ))}
         </div>
