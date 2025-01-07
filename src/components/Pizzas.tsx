@@ -1,31 +1,29 @@
-import React, { Dispatch, useState } from "react";
+import { Dispatch, useState } from "react";
 import type { Pizza } from "../types/pizza";
 import { CartActions } from "../reducers/cart-reducer";
+import Ingredients from "./Ingredients";
 
 type PizzaProps = {
   pizza: Pizza;
-  dispatch: Dispatch<CartActions>
+  dispatch: Dispatch<CartActions>;
 };
 
 export default function Pizzas({ pizza, dispatch }: PizzaProps) {
   const { name, picture, dip, ingredients, mass, size, price } = pizza;
 
- 
   const [selectedMass, setSelectedMass] = useState("normal");
   const [selectedSize, setSelectedSize] = useState("pequeño");
   const [selectedDip, setSelectedDip] = useState("tomate");
 
-  
   const calculatePrice = () => {
     let adjustedPrice = price;
     if (selectedSize === "mediana") {
-      adjustedPrice += price * 0.2; 
+      adjustedPrice += price * 0.2;
     } else if (selectedSize === "familiar") {
-      adjustedPrice += price * 0.4; 
+      adjustedPrice += price * 0.4;
     }
-    return adjustedPrice.toFixed(2); 
+    return adjustedPrice.toFixed(2);
   };
-
 
   const handleAddToCart = () => {
     const customizedPizza = {
@@ -33,13 +31,12 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
       mass: selectedMass,
       size: selectedSize,
       dip: selectedDip,
-      price: parseFloat(calculatePrice()), 
+      price: parseFloat(calculatePrice()),
     };
     dispatch({
-      type: 'add-to-cart',
-      payload: {item: customizedPizza}
+      type: "add-to-cart",
+      payload: { item: customizedPizza },
     });
-    
   };
   return (
     <div className="flex flex-wrap items-center bg-gray-100 rounded-lg shadow-md p-4 my-4">
@@ -52,8 +49,10 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
       </div>
       <div className="w-2/3 pl-4">
         <h3 className="text-black text-xl font-bold uppercase">{name}</h3>
-        <p className="text-gray-600 text-sm mt-2">Ingredientes: {ingredients}</p>
-        
+        <Ingredients
+          ingredients={ingredients}
+        />
+
         <label className="block mt-2">
           <span className="text-gray-700 text-sm">Masa:</span>
           <select
@@ -93,7 +92,9 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
           </select>
         </label>
 
-        <p className="text-primary font-extrabold text-lg mt-2">${calculatePrice()}</p>
+        <p className="text-primary font-extrabold text-lg mt-2">
+          ${calculatePrice()}
+        </p>
 
         <button
           type="button"

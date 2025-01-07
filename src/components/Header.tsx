@@ -28,7 +28,7 @@ export default function Header({
           <div className="carrito flex justify-end">
             <div className="relative group">
               <img
-                src="../../public/carrito.png"
+                src="/public/carrito.png"
                 alt="imagen-carrito"
                 className="w-8 h-8 cursor-pointer"
               />
