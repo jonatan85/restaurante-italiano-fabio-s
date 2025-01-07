@@ -7,14 +7,19 @@ type HeaderPorps = {
   dispatch: Dispatch<CartActions>;
 };
 
-export default function Header({
-  cart,
-  dispatch,
-}: HeaderPorps) {
+export default function Header({ cart, dispatch }: HeaderPorps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
 
+  const totalItems = useMemo(
+    () => cart.reduce((total, pizza) => total + pizza.account, 0),
+    [cart]
+  );
+
   const cartTotal = useMemo(
-    () => cart.reduce((total, item) => total + item.account * item.price, 0).toFixed(2),
+    () =>
+      cart
+        .reduce((total, item) => total + item.account * item.price, 0)
+        .toFixed(2),
     [cart]
   );
 
@@ -32,6 +37,13 @@ export default function Header({
                 alt="imagen-carrito"
                 className="w-8 h-8 cursor-pointer"
               />
+
+              {totalItems > 0 && (
+                <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+              
               {/* Mejorar toda la logica de el carrito */}
               <div className="absolute right-0 mt-2 w-[45rem] bg-white p-6 rounded-lg shadow-lg opacity-0 transition-opacity duration-1000 delay-1000 group-hover:opacity-100 group-hover:delay-0">
                 {isEmpty ? (

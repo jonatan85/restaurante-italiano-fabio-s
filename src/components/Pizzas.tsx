@@ -88,7 +88,6 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
             <option value="barbacoa">Barbacoa</option>
             <option value="carbonara">Carbonara</option>
             <option value="tomate">Tomate</option>
-            <option value="napolitana">Napolitana</option>
           </select>
         </label>
 
