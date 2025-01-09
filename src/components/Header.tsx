@@ -1,4 +1,5 @@
 import { Dispatch, useMemo } from "react";
+import { NavLink } from "react-router-dom";
 import { Pizza } from "../types/pizza";
 import { CartActions } from "../reducers/cart-reducer";
 
@@ -30,6 +31,17 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
           <h1 className="text-4xl font-bold text-center uppercase">Fabio'S</h1>
         </div>
         <nav className="relative bg-gray-800 p-4">
+          <NavLink
+            to="/crear-pizza"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-gray-900 text-white px-4 py-2 rounded-md"
+                : "bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800"
+            }
+          >
+            Crear Pizza
+          </NavLink>
+
           <div className="carrito flex justify-end">
             <div className="relative group">
               <img
@@ -43,7 +55,7 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
                   {totalItems}
                 </span>
               )}
-              
+
               {/* Mejorar toda la logica de el carrito */}
               <div className="absolute right-0 mt-2 w-[45rem] bg-white p-6 rounded-lg shadow-lg opacity-0 transition-opacity duration-1000 delay-1000 group-hover:opacity-100 group-hover:delay-0">
                 {isEmpty ? (

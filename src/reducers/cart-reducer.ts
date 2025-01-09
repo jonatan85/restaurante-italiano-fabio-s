@@ -1,3 +1,4 @@
+import { Ingredients } from './../types/ingredients';
 import { CartItem, Pizza } from "../types/pizza";
 
 export type CartActions =
@@ -6,11 +7,13 @@ export type CartActions =
   | { type: "increaseAccount"; payload: { id: Pizza["_id"] } }
   | { type: "decreaseAccount"; payload: { id: Pizza["_id"] } }
   | { type: "clearCart" }
-  | { type: "setPizzas"; payload: { pizzas: Pizza[] } };
+  | { type: "setPizzas"; payload: { pizzas: Pizza[] } }
+  | { type: "setIngredients"; payload: { ingredients: Ingredients[] } };
 
 export type CartState = {
   data: Pizza[];
   cart: CartItem[];
+  ingredients: Ingredients[];
 };
 
 const initialCart = (): CartItem[] => {
@@ -21,9 +24,11 @@ const initialCart = (): CartItem[] => {
 export const initialState: CartState = {
   data: [],
   cart: initialCart(),
+  ingredients: []
 };
 const MIN_ITEMS = 1;
 const MAX_ITEMS = 5;
+
 export const cartReducer = (
   state: CartState = initialState,
   action: CartActions
@@ -108,6 +113,13 @@ export const cartReducer = (
     return {
       ...state,
       data: action.payload.pizzas,
+    };
+  }
+
+  if (action.type === 'setIngredients') {
+    return {
+      ...state,
+      ingredients: action.payload.ingredients,
     };
   }
 
