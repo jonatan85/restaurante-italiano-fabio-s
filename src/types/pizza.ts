@@ -1,10 +1,12 @@
+import { Ingredients } from "./ingredients";
+
 export type Pizza = {
   _id: string;
   name: string;
   mass: string;
   size: string; 
   dip: string;  
-  ingredients: string[];
+  ingredients: Ingredients[];
   quantity: number;
   price: number;
   account: number;
@@ -14,14 +16,12 @@ export type Pizza = {
 };
 
 
-export type DraftPizza = Omit<Pizza, "id" | "createdAt" | "updatedAt">;
+export type DraftPizza = Omit<Pizza, "createdAt" | "updatedAt">;
 
-export type Ingredient = {
-  id: string;
-  name: string;
-  isVegan: boolean;
-};
+
 
 export type CartItem = Pizza & {
   account: number;
 };
+
+

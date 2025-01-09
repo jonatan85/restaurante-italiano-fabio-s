@@ -1,17 +1,28 @@
-import { useMemo } from "react";
+import { Dispatch, useMemo } from "react";
+import { NavLink } from "react-router-dom";
 import { Pizza } from "../types/pizza";
+import { CartActions } from "../reducers/cart-reducer";
 
 type HeaderPorps = {
-  cart: Pizza[],
-  removeFromCart(_id: string): void,
-  increaseAccount(_id: string): void
-  decreaseAccount(_id: Pizza["_id"]): void
-  clearCart(): void
+  cart: Pizza[];
+  dispatch: Dispatch<CartActions>;
 };
 
-export default function Header({ cart, removeFromCart, increaseAccount, decreaseAccount, clearCart }: HeaderPorps) {
+export default function Header({ cart, dispatch }: HeaderPorps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
-  const cartTotal = useMemo(() => cart.reduce((total, item) => total + (item.account * item.price), 0), [cart]) 
+
+  const totalItems = useMemo(
+    () => cart.reduce((total, pizza) => total + pizza.account, 0),
+    [cart]
+  );
+
+  const cartTotal = useMemo(
+    () =>
+      cart
+        .reduce((total, item) => total + item.account * item.price, 0)
+        .toFixed(2),
+    [cart]
+  );
 
   return (
     <>
@@ -20,13 +31,31 @@ export default function Header({ cart, removeFromCart, increaseAccount, decrease
           <h1 className="text-4xl font-bold text-center uppercase">Fabio'S</h1>
         </div>
         <nav className="relative bg-gray-800 p-4">
+          <NavLink
+            to="/crear-pizza"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-gray-900 text-white px-4 py-2 rounded-md"
+                : "bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800"
+            }
+          >
+            Crear Pizza
+          </NavLink>
+
           <div className="carrito flex justify-end">
             <div className="relative group">
               <img
-                src="../../public/carrito.png"
+                src="/public/carrito.png"
                 alt="imagen-carrito"
                 className="w-8 h-8 cursor-pointer"
               />
+
+              {totalItems > 0 && (
+                <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+
               {/* Mejorar toda la logica de el carrito */}
               <div className="absolute right-0 mt-2 w-[45rem] bg-white p-6 rounded-lg shadow-lg opacity-0 transition-opacity duration-1000 delay-1000 group-hover:opacity-100 group-hover:delay-0">
                 {isEmpty ? (
@@ -73,7 +102,12 @@ export default function Header({ cart, removeFromCart, increaseAccount, decrease
                               <button
                                 type="button"
                                 className="bg-gray-700 text-white px-2 py-1 rounded-md hover:bg-gray-800"
-                                onClick={() => decreaseAccount(pizza._id)}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "decreaseAccount",
+                                    payload: { id: pizza._id },
+                                  })
+                                }
                               >
                                 -
                               </button>
@@ -83,7 +117,12 @@ export default function Header({ cart, removeFromCart, increaseAccount, decrease
                               <button
                                 type="button"
                                 className="bg-gray-700 text-white px-2 py-1 rounded-md hover:bg-gray-800"
-                                onClick={() => increaseAccount(pizza._id)}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "increaseAccount",
+                                    payload: { id: pizza._id },
+                                  })
+                                }
                               >
                                 +
                               </button>
@@ -92,7 +131,12 @@ export default function Header({ cart, removeFromCart, increaseAccount, decrease
                               <button
                                 className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600"
                                 type="button"
-                                onClick={() => removeFromCart(pizza._id)}
+                                onClick={() =>
+                                  dispatch({
+                                    type: "removeFromCart",
+                                    payload: { id: pizza._id },
+                                  })
+                                }
                               >
                                 X
                               </button>
@@ -103,20 +147,21 @@ export default function Header({ cart, removeFromCart, increaseAccount, decrease
                     </table>
                     <p className="text-right text-lg font-medium text-gray-800 mt-4">
                       Total pagar:{" "}
-                      <span className="font-bold">
-                        $
-                        {cartTotal}
-                      </span>
+                      <span className="font-bold">${cartTotal}</span>
                     </p>
                   </>
                 )}
                 {!isEmpty && (
-                <button 
-                  className="bg-gray-700 text-white w-full mt-4 py-2 rounded-md hover:bg-gray-800"
-                  onClick={() => clearCart()}
-                >
-                  Vaciar Carrito
-                </button>
+                  <button
+                    className="bg-gray-700 text-white w-full mt-4 py-2 rounded-md hover:bg-gray-800"
+                    onClick={() =>
+                      dispatch({
+                        type: "clearCart",
+                      })
+                    }
+                  >
+                    Vaciar Carrito
+                  </button>
                 )}
               </div>
             </div>
