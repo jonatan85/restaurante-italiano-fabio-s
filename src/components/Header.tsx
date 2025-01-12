@@ -32,6 +32,17 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
         </div>
         <nav className="relative bg-gray-800 p-4">
           <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-gray-900 text-white px-4 py-2 rounded-md"
+                : "bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800"
+            }
+          >
+            Home
+          </NavLink>
+
+          <NavLink
             to="/crear-pizza"
             className={({ isActive }) =>
               isActive
