@@ -1,14 +1,16 @@
 import { useEffect, useReducer, useState } from "react";
-import Header from "./components/Header.tsx";
-import Pizzas from "./components/Pizzas.tsx";
-import { getPizzas } from "./service/pizzaService.ts";
-
+import { Route, Routes } from "react-router-dom";
 
 import { cartReducer, initialState } from "./reducers/cart-reducer.ts";
+
+import { getPizzas } from "./service/pizzaService.ts";
 import { getIngredients } from "./service/ingredientsService.ts";
 
+import CreatePizza from "./components/CreatePizza.tsx";
+import Pizzas from "./components/Pizzas.tsx";
+import Header from "./components/Header.tsx";
+
 function App() {
-  
   const [error, setError] = useState<string | null>(null);
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
@@ -29,7 +31,10 @@ function App() {
     const fetchIngredients = async () => {
       try {
         const dataIngredients = await getIngredients();
-        dispatch({ type: "setIngredients", payload: { ingredients: dataIngredients } });
+        dispatch({
+          type: "setIngredients",
+          payload: { ingredients: dataIngredients },
+        });
       } catch (err) {
         setError("Error al cargar los Ingredientes");
         console.error(err);
@@ -50,11 +55,28 @@ function App() {
           ¡Elige tu Pizza Favorita!
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-          {state.data.map((pizza) => (
-            <Pizzas key={pizza._id} pizza={pizza} dispatch={dispatch} />
-          ))}
-        </div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+                {state.data.map((pizza) => (
+                  <Pizzas key={pizza._id} pizza={pizza} dispatch={dispatch} />
+                ))}
+              </div>
+            }
+          />
+
+          <Route
+            path="/crear-pizza"
+            element={
+              <CreatePizza
+                ingredients={state.ingredients}
+                dispatch={dispatch}
+              />
+            }
+          />
+        </Routes>
       </main>
 
       <footer className="bg-gray-800 mt-10 py-8">

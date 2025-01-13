@@ -2,6 +2,7 @@ import { Dispatch, useState } from "react";
 import type { Pizza } from "../types/pizza";
 import { CartActions } from "../reducers/cart-reducer";
 import Ingredients from "./Ingredients";
+import { calculatePrice } from "../utils/calculatePrice"; 
 
 type PizzaProps = {
   pizza: Pizza;
@@ -15,23 +16,13 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
   const [selectedSize, setSelectedSize] = useState("pequeño");
   const [selectedDip, setSelectedDip] = useState("tomate");
 
-  const calculatePrice = () => {
-    let adjustedPrice = price;
-    if (selectedSize === "mediana") {
-      adjustedPrice += price * 0.2;
-    } else if (selectedSize === "familiar") {
-      adjustedPrice += price * 0.4;
-    }
-    return adjustedPrice.toFixed(2);
-  };
-
   const handleAddToCart = () => {
     const customizedPizza = {
       ...pizza,
       mass: selectedMass,
       size: selectedSize,
       dip: selectedDip,
-      price: parseFloat(calculatePrice()),
+      price: calculatePrice(price, selectedSize),
     };
     dispatch({
       type: "add-to-cart",
@@ -92,7 +83,7 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
         </label>
 
         <p className="text-primary font-extrabold text-lg mt-2">
-          ${calculatePrice()}
+          ${ calculatePrice( price, selectedSize )} 
         </p>
 
         <button

@@ -116,12 +116,12 @@ export const cartReducer = (
     };
   }
 
-  if (action.type === 'setIngredients') {
-    return {
-      ...state,
-      ingredients: action.payload.ingredients,
-    };
-  }
+  if (action.type === "setIngredients") {
+  return {
+    ...state,
+    ingredients: action.payload.ingredients,
+  };
+}
 
   return state;
 };
