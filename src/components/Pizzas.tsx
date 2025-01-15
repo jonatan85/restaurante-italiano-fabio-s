@@ -2,7 +2,7 @@ import { Dispatch, useState } from "react";
 import type { Pizza } from "../types/pizza";
 import { CartActions } from "../reducers/cart-reducer";
 import Ingredients from "./Ingredients";
-import { calculatePrice } from "../utils/calculatePrice"; 
+import { calculatePrice } from "../utils/calculatePrice";
 
 type PizzaProps = {
   pizza: Pizza;
@@ -30,70 +30,73 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
     });
   };
   return (
-    <div className="flex flex-wrap items-center bg-gray-100 rounded-lg shadow-md p-4 my-4">
-      <div className="w-1/3">
-        <img
-          className="rounded-lg object-cover w-full"
-          src={picture}
-          alt={`Imagen de la pizza ${name}`}
-        />
-      </div>
-      <div className="w-2/3 pl-4">
-        <h3 className="text-black text-xl font-bold uppercase">{name}</h3>
-        <Ingredients
-          ingredients={ingredients}
-        />
+<div className="flex flex-col sm:flex-row bg-gray-100 rounded-lg shadow-lg p-6 border border-gray-200">
+  <div className="w-full sm:w-1/2">
+    <img
+      className="rounded-lg object-cover w-full h-64 sm:h-full"
+      src={pizza.picture}
+      alt={`Imagen de la pizza ${pizza.name}`}
+    />
+  </div>
 
-        <label className="block mt-2">
-          <span className="text-gray-700 text-sm">Masa:</span>
-          <select
-            className="block w-full mt-1 border-gray-300 rounded-md"
-            value={selectedMass}
-            onChange={(e) => setSelectedMass(e.target.value)}
-          >
-            <option value="fina">Fina</option>
-            <option value="normal">Normal</option>
-          </select>
-        </label>
+  <div className="w-full sm:w-1/2 sm:pl-8 mt-6 sm:mt-0 flex flex-col justify-between">
+    <h3 className="text-black text-2xl font-bold uppercase mb-4 text-center sm:text-left">
+      {pizza.name}
+    </h3>
 
-        <label className="block mt-2">
-          <span className="text-gray-700 text-sm">Tamaño:</span>
-          <select
-            className="block w-full mt-1 border-gray-300 rounded-md"
-            value={selectedSize}
-            onChange={(e) => setSelectedSize(e.target.value)}
-          >
-            <option value="pequeña">Pequeña</option>
-            <option value="mediana">Mediana</option>
-            <option value="familiar">Familiar</option>
-          </select>
-        </label>
-
-        <label className="block mt-2">
-          <span className="text-gray-700 text-sm">Salsa:</span>
-          <select
-            className="block w-full mt-1 border-gray-300 rounded-md"
-            value={selectedDip}
-            onChange={(e) => setSelectedDip(e.target.value)}
-          >
-            <option value="barbacoa">Barbacoa</option>
-            <option value="carbonara">Carbonara</option>
-            <option value="tomate">Tomate</option>
-          </select>
-        </label>
-
-        <p className="text-primary font-extrabold text-lg mt-2">
-          ${ calculatePrice( price, selectedSize )} 
-        </p>
-
-        <button
-          type="button"
-          className="bg-gray-800 text-white rounded-md w-full py-2 mt-4 hover:bg-gray-900"
-          onClick={handleAddToCart}
+    <div className="flex flex-col gap-4">
+      <label>
+        <span className="text-gray-600 font-medium">Masa:</span>
+        <select
+          className="block w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          value={selectedMass}
+          onChange={(e) => setSelectedMass(e.target.value)}
         >
-          Agregar al Carrito
-        </button>
-      </div>
+          <option value="fina">Fina</option>
+          <option value="normal">Normal</option>
+        </select>
+      </label>
+
+      <label>
+        <span className="text-gray-600 font-medium">Tamaño:</span>
+        <select
+          className="block w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          value={selectedSize}
+          onChange={(e) => setSelectedSize(e.target.value)}
+        >
+          <option value="pequeña">Pequeña</option>
+          <option value="mediana">Mediana</option>
+          <option value="familiar">Familiar</option>
+        </select>
+      </label>
+
+      <label>
+        <span className="text-gray-600 font-medium">Salsa:</span>
+        <select
+          className="block w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          value={selectedDip}
+          onChange={(e) => setSelectedDip(e.target.value)}
+        >
+          <option value="barbacoa">Barbacoa</option>
+          <option value="carbonara">Carbonara</option>
+          <option value="tomate">Tomate</option>
+        </select>
+      </label>
     </div>
+
+    <p className="text-yellow-500 font-extrabold text-xl mt-6 text-center sm:text-left">
+      ${calculatePrice(pizza.price, selectedSize)}
+    </p>
+
+    <button
+      type="button"
+      className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-lg w-full py-3 mt-4 font-bold text-lg shadow-md hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300"
+      onClick={handleAddToCart}
+    >
+      Agregar al Carrito
+    </button>
+  </div>
+</div>
+
   );
 }
