@@ -26,49 +26,52 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
 
   return (
     <>
-      <header className="bg-gray-800 text-white">
-        <div className="container mx-auto px-4 py-6">
-          <h1 className="text-4xl font-bold text-center uppercase">Fabio'S</h1>
+      <header className="bg-gradient-to-r from-gray-800 to-gray-900 text-white shadow-lg">
+        <div className="container mx-auto px-4 py-8">
+          <h1 className="text-5xl font-extrabold text-center uppercase tracking-wider">
+            Fabio'S
+          </h1>
         </div>
-        <nav className="relative bg-gray-800 p-4">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive
-                ? "bg-gray-900 text-white px-4 py-2 rounded-md"
-                : "bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800"
-            }
-          >
-            Home
-          </NavLink>
+        <nav className="relative bg-gray-900 p-4 shadow-md">
+          <div className="flex items-center justify-between">
+            <div className="flex gap-4">
+              <NavLink
+                to="/"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-white border-b-4 border-yellow-500 px-4 py-2"
+                    : "text-gray-300 hover:text-white px-4 py-2 hover:border-b-4 hover:border-yellow-500 transition-all"
+                }
+              >
+                Home
+              </NavLink>
 
-          <NavLink
-            to="/crear-pizza"
-            className={({ isActive }) =>
-              isActive
-                ? "bg-gray-900 text-white px-4 py-2 rounded-md"
-                : "bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-800"
-            }
-          >
-            Crear Pizza
-          </NavLink>
+              <NavLink
+                to="/crear-pizza"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-white border-b-4 border-yellow-500 px-4 py-2"
+                    : "text-gray-300 hover:text-white px-4 py-2 hover:border-b-4 hover:border-yellow-500 transition-all"
+                }
+              >
+                Crear Pizza
+              </NavLink>
+            </div>
 
-          <div className="carrito flex justify-end">
-            <div className="relative group">
+            <div className="carrito relative group">
               <img
                 src="/public/carrito.png"
                 alt="imagen-carrito"
-                className="w-8 h-8 cursor-pointer"
+                className="w-10 h-10 cursor-pointer hover:scale-110 transition-transform"
               />
 
               {totalItems > 0 && (
-                <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
                   {totalItems}
                 </span>
               )}
 
-              {/* Mejorar toda la logica de el carrito */}
-              <div className="absolute right-0 mt-2 w-[45rem] bg-white p-6 rounded-lg shadow-lg opacity-0 transition-opacity duration-1000 delay-1000 group-hover:opacity-100 group-hover:delay-0">
+              <div className="absolute right-0 mt-4 w-[45rem] bg-white p-6 rounded-lg shadow-lg opacity-0 invisible transition-all duration-300 group-hover:opacity-100 group-hover:visible">
                 {isEmpty ? (
                   <p className="text-center text-gray-600 font-medium">
                     El carrito está vacío
@@ -76,7 +79,7 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
                 ) : (
                   <>
                     <table className="table-auto w-full mt-4 text-left border-collapse">
-                      <thead className="bg-gray-200">
+                      <thead className="bg-gray-100">
                         <tr>
                           <th className="px-4 py-2 text-sm font-semibold text-gray-700">
                             Imagen
@@ -107,7 +110,7 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
                               {pizza.name}
                             </td>
                             <td className="px-4 py-2 font-bold text-gray-700">
-                              {pizza.price}
+                              ${pizza.price.toFixed(2)}
                             </td>
                             <td className="px-4 py-7 flex items-center gap-2">
                               <button
@@ -156,15 +159,17 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
                         ))}
                       </tbody>
                     </table>
-                    <p className="text-right text-lg font-medium text-gray-800 mt-4">
-                      Total pagar:{" "}
-                      <span className="font-bold">${cartTotal}</span>
+                    <p className="text-right text-xl font-semibold text-gray-900 mt-4">
+                      Total a pagar:{" "}
+                      <span className="font-bold text-red-500">
+                        ${cartTotal}
+                      </span>
                     </p>
                   </>
                 )}
                 {!isEmpty && (
                   <button
-                    className="bg-gray-700 text-white w-full mt-4 py-2 rounded-md hover:bg-gray-800"
+                    className="bg-red-500 text-white w-full mt-4 py-2 rounded-md hover:bg-red-600"
                     onClick={() =>
                       dispatch({
                         type: "clearCart",
