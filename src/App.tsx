@@ -9,6 +9,7 @@ import { getIngredients } from "./service/ingredientsService.ts";
 import CreatePizza from "./components/CreatePizza.tsx";
 import Pizzas from "./components/Pizzas.tsx";
 import Header from "./components/Header.tsx";
+import BackOffice from "./components/BackOffice.tsx";
 
 function App() {
   const [error, setError] = useState<string | null>(null);
@@ -74,6 +75,16 @@ function App() {
             element={
               <CreatePizza
                 ingredients={state.ingredients}
+                dispatch={dispatch}
+              />
+            }
+          />
+
+          <Route
+            path="/back-office"
+            element={
+              <BackOffice
+                cart={state.cart}
                 dispatch={dispatch}
               />
             }
