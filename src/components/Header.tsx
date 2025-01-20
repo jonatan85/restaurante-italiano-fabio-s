@@ -56,6 +56,17 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
               >
                 Crear Pizza
               </NavLink>
+
+              <NavLink
+                to="/back-office"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-white border-b-4 border-yellow-500 px-4 py-2"
+                    : "text-gray-300 hover:text-white px-4 py-2 hover:border-b-4 hover:border-yellow-500 transition-all"
+                }
+              >
+                Resumen de Compra
+              </NavLink>
             </div>
 
             <div className="carrito relative group">
