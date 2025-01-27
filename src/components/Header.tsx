@@ -1,7 +1,8 @@
-import { Dispatch, useMemo } from "react";
-import { NavLink } from "react-router-dom";
+import { Dispatch, useEffect, useMemo, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Pizza } from "../types/pizza";
 import { CartActions } from "../reducers/cart-reducer";
+import Logout from "./Logout";
 
 type HeaderPorps = {
   cart: Pizza[];
@@ -10,6 +11,8 @@ type HeaderPorps = {
 
 export default function Header({ cart, dispatch }: HeaderPorps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const totalItems = useMemo(
     () => cart.reduce((total, pizza) => total + pizza.account, 0),
@@ -23,6 +26,15 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
         .toFixed(2),
     [cart]
   );
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    // setIsAuthenticated(false); 
+    navigate("/login"); 
+  };
+
+  useEffect(() => {
+    setIsAuthenticated(!!localStorage.getItem("authToken"));
+  }, []);
 
   return (
     <>
@@ -67,6 +79,33 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
               >
                 Resumen de Compra
               </NavLink>
+
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-white border-b-4 border-yellow-500 px-4 py-2"
+                    : "text-gray-300 hover:text-white px-4 py-2 hover:border-b-4 hover:border-yellow-500 transition-all"
+                }
+              >
+                <p>¿Eres Nuevo?</p>
+                <p>Crea Tu Cuenta</p>
+              </NavLink>
+
+              {!isAuthenticated ? (
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-white border-b-4 border-yellow-500 px-4 py-2"
+                      : "text-gray-300 hover:text-white px-4 py-2 hover:border-b-4 hover:border-yellow-500 transition-all"
+                  }
+                >
+                  Iniciar Sesión
+                </NavLink>
+              ) : (
+                <Logout setIsAuthenticated={setIsAuthenticated} /> 
+              )}
             </div>
 
             <div className="carrito relative group">
@@ -179,16 +218,21 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
                   </>
                 )}
                 {!isEmpty && (
-                  <button
-                    className="bg-red-500 text-white w-full mt-4 py-2 rounded-md hover:bg-red-600"
-                    onClick={() =>
-                      dispatch({
-                        type: "clearCart",
-                      })
-                    }
-                  >
-                    Vaciar Carrito
-                  </button>
+                  <>
+                    <button
+                      className="bg-red-500 text-white w-full mt-4 py-2 rounded-md hover:bg-red-600"
+                      onClick={() =>
+                        dispatch({
+                          type: "clearCart",
+                        })
+                      }
+                    >
+                      Vaciar Carrito
+                    </button>
+                    <button className="bg-red-500 text-white w-full mt-4 py-2 rounded-md hover:bg-red-600">
+                      <NavLink to="/back-office">Resumen de Compra</NavLink>
+                    </button>
+                  </>
                 )}
               </div>
             </div>
