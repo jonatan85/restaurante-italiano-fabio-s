@@ -1,5 +1,5 @@
 import { useState, ReactNode } from "react";
-import { AuthContext } from "./authContext";
+import { AuthContext } from "./AuthContext";
 
 // Envolvemos toda la app.
 interface AuthProviderProps {

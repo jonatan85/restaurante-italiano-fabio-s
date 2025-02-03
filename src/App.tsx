@@ -1,10 +1,14 @@
 import { useEffect, useReducer, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
+import Posts from "./components/Post.tsx";
+
 import { cartReducer, initialState } from "./reducers/cart-reducer.ts";
 
 import { getPizzas } from "./service/pizzaService.ts";
 import { getIngredients } from "./service/ingredientsService.ts";
+
+import ProtectedRoute from "./routes/ProtectedRoute.tsx";
 
 import CreatePizza from "./components/CreatePizza.tsx";
 import Pizzas from "./components/Pizzas.tsx";
@@ -12,8 +16,6 @@ import Header from "./components/Header.tsx";
 import BackOffice from "./components/BackOffice.tsx";
 import RegisterForm from "./components/RegisterForm.tsx";
 import Login from "./components/Login.tsx";
-import ProtectedRoute from "./routes/ProtectedRoute.tsx";
-import Logout from "./components/Logout.tsx";
 
 function App() {
   const [error, setError] = useState<string | null>(null);

@@ -9,7 +9,7 @@ type PizzaProps = {
 };
 
 export default function Pizzas({ pizza, dispatch }: PizzaProps) {
-  const { price } = pizza;
+  const { price, ingredients } = pizza;
 
   const [selectedMass, setSelectedMass] = useState("normal");
   const [selectedSize, setSelectedSize] = useState("pequeño");
@@ -42,6 +42,14 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
         <h3 className="text-black text-2xl font-bold uppercase mb-4 text-center sm:text-left">
           {pizza.name}
         </h3>
+        
+        <ul className="text-gray-700 mb-4">
+          {ingredients?.map((ingredient, index) => (
+            <li key={ingredient._id} className="flex items-center gap-2">
+              <span>🍕</span> {ingredient.name}
+            </li>
+          ))}
+        </ul>
 
         <div className="flex flex-col gap-4">
           <label>
@@ -66,19 +74,6 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
               <option value="pequeña">Pequeña</option>
               <option value="mediana">Mediana</option>
               <option value="familiar">Familiar</option>
-            </select>
-          </label>
-
-          <label>
-            <span className="text-gray-600 font-medium">Salsa:</span>
-            <select
-              className="block w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              value={selectedDip}
-              onChange={(e) => setSelectedDip(e.target.value)}
-            >
-              <option value="barbacoa">Barbacoa</option>
-              <option value="carbonara">Carbonara</option>
-              <option value="tomate">Tomate</option>
             </select>
           </label>
         </div>
