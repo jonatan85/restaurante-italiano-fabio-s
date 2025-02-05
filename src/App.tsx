@@ -1,15 +1,21 @@
 import { useEffect, useReducer, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
+import Posts from "./components/Post.tsx";
+
 import { cartReducer, initialState } from "./reducers/cart-reducer.ts";
 
 import { getPizzas } from "./service/pizzaService.ts";
 import { getIngredients } from "./service/ingredientsService.ts";
 
+import ProtectedRoute from "./routes/ProtectedRoute.tsx";
+
 import CreatePizza from "./components/CreatePizza.tsx";
 import Pizzas from "./components/Pizzas.tsx";
 import Header from "./components/Header.tsx";
 import BackOffice from "./components/BackOffice.tsx";
+import RegisterForm from "./components/RegisterForm.tsx";
+import Login from "./components/Login.tsx";
 
 function App() {
   const [error, setError] = useState<string | null>(null);
@@ -57,16 +63,15 @@ function App() {
             path="/"
             element={
               <div>
-              <h2 className="text-center text-3xl font-bold text-gray-800">
-                ¡Elige tu Pizza Favorita!
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                {state.data.map((pizza) => (
-                  <Pizzas key={pizza._id} pizza={pizza} dispatch={dispatch} />
-                ))}
+                <h2 className="text-center text-3xl font-bold text-gray-800">
+                  ¡Elige tu Pizza Favorita!
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                  {state.data.map((pizza) => (
+                    <Pizzas key={pizza._id} pizza={pizza} dispatch={dispatch} />
+                  ))}
+                </div>
               </div>
-            </div>
-            
             }
           />
 
@@ -80,15 +85,15 @@ function App() {
             }
           />
 
-          <Route
-            path="/back-office"
-            element={
-              <BackOffice
-                cart={state.cart}
-                dispatch={dispatch}
-              />
-            }
-          />
+          <Route element={<ProtectedRoute />}>
+            <Route
+              path="/back-office"
+              element={<BackOffice cart={state.cart} dispatch={dispatch} />}
+            />
+          </Route>
+
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </main>
 
