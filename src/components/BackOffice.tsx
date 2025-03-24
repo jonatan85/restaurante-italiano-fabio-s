@@ -1,6 +1,8 @@
 import { Dispatch, useMemo } from "react";
 import { CartItem } from "../types/pizza";
 import { CartActions } from "../reducers/cart-reducer";
+import { OrderPayload, placeOrder } from "../service/orders";
+import { useNavigate } from "react-router-dom";
 
 type BackOfficeProps = {
   cart: CartItem[];
@@ -9,6 +11,7 @@ type BackOfficeProps = {
 
 export default function BackOffice({ cart, dispatch }: BackOfficeProps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
+  const navigate = useNavigate();
 
   const cartTotal = useMemo(
     () =>
@@ -17,6 +20,37 @@ export default function BackOffice({ cart, dispatch }: BackOfficeProps) {
         .toFixed(2),
     [cart]
   );
+
+  const handlePlaceOrder = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+
+      if (!userId) {
+        alert("Debes iniciar sesión para realizar un pedido.");
+        navigate("/login"); 
+        return;
+      }
+
+      const orderPayload: OrderPayload = {
+        user: userId,
+        pizzas: cart.map((pizza) => ({
+          pizza: pizza.isCustom ? { ...pizza, _id: undefined } : pizza._id,
+          quantity: pizza.account,
+        })),
+        total: parseFloat(cartTotal),
+      };
+      
+
+      await placeOrder(orderPayload);
+      dispatch({ type: "clearCart" });
+      dispatch({ type: "clearCustomPizzas" });
+      alert("¡Pedido realizado con éxito!");
+      navigate("/order-success");
+    } catch (error) {
+      console.error("Error al realizar el pedido:", error);
+      alert("Hubo un error al realizar el pedido. Inténtalo de nuevo.");
+    }
+  };
 
   return (
     <>
@@ -131,6 +165,7 @@ export default function BackOffice({ cart, dispatch }: BackOfficeProps) {
                   ? "bg-gray-400 text-white cursor-not-allowed"
                   : "bg-gradient-to-r from-yellow-500 to-yellow-600 text-white hover:from-yellow-600 hover:to-yellow-700"
               }`}
+              onClick={handlePlaceOrder}
               disabled={isEmpty}
             >
               Comprar

@@ -11,6 +11,8 @@ export type RegisterFormState = {
   address: string;
   postalCode: string;
   city: string;
+  phoneNumber: string;
+  country: string;
 };
 
 export const initialRegisterFormState: RegisterFormState = {
@@ -21,6 +23,8 @@ export const initialRegisterFormState: RegisterFormState = {
   address: "",
   postalCode: "",
   city: "",
+  phoneNumber: "",
+  country: "",
 };
 
 export const registerFormReducer = (

@@ -11,7 +11,7 @@ export const registerUser = async (
 ): Promise<RegisterResponse> => {
   try {
     const response = await AxiosApi.post<RegisterResponse>(
-      "/user/register",
+      "/users-dos/register",
       userData
     );
     return response.data;
@@ -25,7 +25,7 @@ export const loginUserJwt = async (
 ): Promise<LoginResponse> => {
   try {
     const response = await AxiosApi.post<LoginResponse>(
-      "/user/login-jwt",
+      "/users-dos/login-jwt",
       userData
     );
     return response.data;
@@ -43,7 +43,7 @@ export const logoutUserJwt = async (): Promise<string> => {
     }
 
     const response = await AxiosApi.post<string>(
-      "/user/logout-jwt",
+      "/users-dos/logout-jwt",
       {},
       {
         headers: {

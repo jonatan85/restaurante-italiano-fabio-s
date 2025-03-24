@@ -6,6 +6,8 @@ export interface User {
   address?: string;
   postalCode?: string;
   city?: string;
+  phoneNumber?: string;
+  country?: string;
   createdAt?: Date;
   updatedAt?: Date;
 };

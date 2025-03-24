@@ -1,7 +1,7 @@
-import type { Ingredients } from "../types/ingredients";
+import type { Ingredient } from "../types/ingredients";
 
 type ingredientsPorps = {
-  ingredients: Ingredients[];
+  ingredients: Ingredient[];
 };
 
 export default function Ingredients({ ingredients }: ingredientsPorps) {

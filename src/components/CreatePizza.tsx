@@ -1,6 +1,6 @@
 import { Dispatch, FormEvent, useReducer } from "react";
 import { Pizza } from "../types/pizza.ts";
-import { Ingredients } from "../types/ingredients.ts";
+import { Ingredient } from "../types/ingredients.ts";
 import { CartActions } from "../reducers/cart-reducer.ts";
 import { calculatePrice } from "../utils/calculatePrice.ts";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../reducers/createPizza-reducer.ts";
 
 type CreatePizzaProps = {
-  ingredients: Ingredients[];
+  ingredients: Ingredient[];
   dispatch: Dispatch<CartActions>;
 };
 export default function CreatePizza({
@@ -43,6 +43,7 @@ export default function CreatePizza({
       quantity: 1,
       price: calculatePrice(8, state.size, state.selectedIngredients, true),
       account: 1,
+      isCustom: true,
     };
 
     dispatch({ type: "add-to-cart", payload: { item: newPizza } });
@@ -52,7 +53,7 @@ export default function CreatePizza({
 
   const MAX_INGREDIENTS = 5;
 
-  const handleIngredientChange = (ingredient: Ingredients) => {
+  const handleIngredientChange = (ingredient: Ingredient) => {
     if (
       state.selectedIngredients.length >= MAX_INGREDIENTS &&
       !state.selectedIngredients.some((ing) => ing._id === ingredient._id)
