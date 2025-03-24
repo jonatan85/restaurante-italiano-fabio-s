@@ -13,14 +13,13 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
 
   const [selectedMass, setSelectedMass] = useState("normal");
   const [selectedSize, setSelectedSize] = useState("pequeño");
-  const [selectedDip, setSelectedDip] = useState("tomate");
+
 
   const handleAddToCart = () => {
     const customizedPizza = {
       ...pizza,
       mass: selectedMass,
       size: selectedSize,
-      dip: selectedDip,
       price: calculatePrice(price, selectedSize),
     };
     dispatch({
@@ -44,7 +43,7 @@ export default function Pizzas({ pizza, dispatch }: PizzaProps) {
         </h3>
         
         <ul className="text-gray-700 mb-4">
-          {ingredients?.map((ingredient, index) => (
+          {ingredients?.map((ingredient) => (
             <li key={ingredient._id} className="flex items-center gap-2">
               <span>🍕</span> {ingredient.name}
             </li>

@@ -12,7 +12,7 @@ type HeaderPorps = {
 export default function Header({ cart, dispatch }: HeaderPorps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
- 
+
 
   const totalItems = useMemo(
     () => cart.reduce((total, pizza) => total + pizza.account, 0),
@@ -99,13 +99,13 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
                   Iniciar Sesión
                 </NavLink>
               ) : (
-                <Logout setIsAuthenticated={setIsAuthenticated} /> 
+                <Logout setIsAuthenticated={setIsAuthenticated} />
               )}
             </div>
 
             <div className="carrito relative group">
               <img
-                src="/public/carrito.png"
+                src="/carrito.png"
                 alt="imagen-carrito"
                 className="w-10 h-10 cursor-pointer hover:scale-110 transition-transform"
               />
