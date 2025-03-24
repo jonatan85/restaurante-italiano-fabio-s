@@ -1,4 +1,4 @@
-import { Ingredients } from "./ingredients";
+import { Ingredient } from "./ingredients";
 
 export type Pizza = {
   _id: string;
@@ -6,10 +6,11 @@ export type Pizza = {
   mass: string;
   size: string; 
   dip: string;  
-  ingredients: Ingredients[];
+  ingredients: Ingredient[];
   quantity: number;
   price: number;
   account: number;
+  isCustom: boolean;
   picture?: string;
   createdAt?: string;
   updatedAt?: string;

@@ -1,7 +1,6 @@
 import { useState, ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
 
-// Envolvemos toda la app.
 interface AuthProviderProps {
   children: ReactNode;
 }

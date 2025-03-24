@@ -1,8 +1,6 @@
 import { useEffect, useReducer, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import Posts from "./components/Post.tsx";
-
 import { cartReducer, initialState } from "./reducers/cart-reducer.ts";
 
 import { getPizzas } from "./service/pizzaService.ts";

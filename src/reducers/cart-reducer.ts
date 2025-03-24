@@ -1,4 +1,4 @@
-import { Ingredients } from './../types/ingredients';
+import { Ingredient } from "../types/ingredients";
 import { CartItem, Pizza } from "../types/pizza";
 
 export type CartActions =
@@ -7,13 +7,14 @@ export type CartActions =
   | { type: "increaseAccount"; payload: { id: Pizza["_id"] } }
   | { type: "decreaseAccount"; payload: { id: Pizza["_id"] } }
   | { type: "clearCart" }
+  | { type: "clearCustomPizzas" }
   | { type: "setPizzas"; payload: { pizzas: Pizza[] } }
-  | { type: "setIngredients"; payload: { ingredients: Ingredients[] } };
+  | { type: "setIngredients"; payload: { ingredients: Ingredient[] } };
 
 export type CartState = {
   data: Pizza[];
   cart: CartItem[];
-  ingredients: Ingredients[];
+  ingredients: Ingredient[];
 };
 
 const initialCart = (): CartItem[] => {
@@ -106,6 +107,13 @@ export const cartReducer = (
     return {
       ...state,
       cart: [],
+    };
+  }
+
+  if (action.type === "clearCustomPizzas") {
+    return {
+      ...state, 
+      cart: state.cart.filter((item) => !item.isCustom)
     };
   }
 

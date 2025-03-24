@@ -1,7 +1,7 @@
 import AxiosApi from "./axiosApi";
-import { Ingredients } from "../types/ingredients";
+import { Ingredient } from "../types/ingredients";
 
-export const getIngredients = async (): Promise<Ingredients[]> => {
-    const response = await AxiosApi.get<Ingredients[]>('/ingredients');
+export const getIngredients = async (): Promise<Ingredient[]> => {
+    const response = await AxiosApi.get<Ingredient[]>('/ingredients');
     return response.data;
 }
