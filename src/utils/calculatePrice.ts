@@ -1,9 +1,9 @@
-import { Ingredients } from "../types/ingredients";
+import { Ingredient } from "../types/ingredients";
 
 export const calculatePrice = (
      basePrice: number,
      selectedSize: string,
-     selectedIngredients: Ingredients[] = [],
+     selectedIngredients: Ingredient[] = [],
      includeIngredientsCost: boolean = false
 ): number => {
     let adjustedPrice = basePrice;

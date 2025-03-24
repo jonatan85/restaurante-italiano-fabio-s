@@ -1,5 +1,5 @@
 import { Dispatch, useEffect, useMemo, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Pizza } from "../types/pizza";
 import { CartActions } from "../reducers/cart-reducer";
 import Logout from "./Logout";
@@ -12,7 +12,7 @@ type HeaderPorps = {
 export default function Header({ cart, dispatch }: HeaderPorps) {
   const isEmpty = useMemo(() => cart.length === 0, [cart]);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const navigate = useNavigate();
+ 
 
   const totalItems = useMemo(
     () => cart.reduce((total, pizza) => total + pizza.account, 0),
@@ -26,11 +26,6 @@ export default function Header({ cart, dispatch }: HeaderPorps) {
         .toFixed(2),
     [cart]
   );
-  const handleLogout = () => {
-    localStorage.removeItem("authToken");
-    // setIsAuthenticated(false); 
-    navigate("/login"); 
-  };
 
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem("authToken"));
